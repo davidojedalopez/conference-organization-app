@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/651bb39277bb4f3e9fc901b611588c5b)](https://www.codacy.com/app/david-ojeda-lopez/conference-organization-app)
+
 # Conference Organization App 
 
 ## Description
