@@ -504,7 +504,7 @@ class ConferenceApi(remote.Service):
 
         # get existing conference
         conference = ndb.Key(urlsafe=request.websafeConferenceKey).get()    
-        if not conf:
+        if not conference:
             raise endpoints.NotFoundException(
                 'No conference found with key: %s' % request.websafeConferenceKey)
 
