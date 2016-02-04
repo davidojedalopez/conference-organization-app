@@ -57,8 +57,6 @@ class setFeaturedSpeakerHandler(webapp2.RequestHandler):
 
         if len(list(sessions)) > 1:     
             cache_data['sessionNames'] = [session.name for session in sessions]
-
-        if cache_data:
             memcache.set(MEMCACHE_FEATURED_SPEAKER_KEY, cache_data)
 
 app = webapp2.WSGIApplication([
