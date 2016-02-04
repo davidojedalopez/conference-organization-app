@@ -797,7 +797,7 @@ class ConferenceApi(remote.Service):
         return self._copySessionToForm(session)
 
     @endpoints.method(SessionForm, SessionForm,
-        path='sessions',
+        path='sessions/create',
         http_method='POST',
         name='createSession')
     def createSession(self, request):
