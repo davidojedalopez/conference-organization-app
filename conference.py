@@ -474,10 +474,7 @@ class ConferenceApi(remote.Service):
         http_method='GET',
         name='getConferenceSessions')
     def getConferenceSessions(self, request):
-        """Given a conference, return all its sessions"""
-
-        # copy ConferenceForm/ProtpRPC Message into dict
-        data = {field.name: getattr(request, field.name) for field in request.all_fields()}
+        """Given a conference, return all its sessions"""       
 
         # get existing conference
         conference = ndb.Key(urlsafe=request.websafeConferenceKey).get()
