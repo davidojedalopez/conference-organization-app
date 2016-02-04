@@ -816,7 +816,7 @@ class ConferenceApi(remote.Service):
         # query sessions by speaker, exact match
         sessions = Session.query(Session.speaker == speaker)
 
-        # return set of ConferenceForm objects per Conference
+        # return set of SessionForms objects per Session
         return SessionForms(
             items=[self._copySessionToForm(session) for session in sessions]
         )
