@@ -774,6 +774,7 @@ class ConferenceApi(remote.Service):
         http_method='DELETE',
         name='deleteSessionInWishlist')
     def deleteSessionInWishlist(self, request):
+        """Deletes a previously added Session from the wishlist."""        
         user = endpoints.get_current_user()
         if not user:
             raise endpoints.UnauthorizedException('Authorization required')
