@@ -60,7 +60,7 @@ For the query to find non-workshop sessions after 7 P.M., there are some limitat
 
 To add a task that checks for the speaker when a new session is created, I modified the `createSession` endpoint. This method will add a task using App Engine's Task Queue when there is more than one session by this speaker at the same conference. The task adds the featured speaker and the session names to Memcache under the `MEMCACHE_FEATURED_SPEAKER_KEY` key.   
 
-The endpoint `getFeaturedSpeaker` will check for the featured speaker om the Memcache. If it is not there, it would get the next upcoming speaker.
+The endpoint `getFeaturedSpeaker` will check for the featured speaker on the Memcache. If it is not there, it would get the next upcoming speaker.
 
 
 ## Products
