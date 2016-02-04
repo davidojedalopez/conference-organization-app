@@ -684,7 +684,7 @@ class ConferenceApi(remote.Service):
             data['startTime'] = datetime.strptime(data['startTime'][:5], "%H:%M").time()
 
         # generate parent (Conference) Key
-        parent_key = ndb.Key(Conference, conference.key.id())
+        parent_key = ndb.Key(urlsafe=request.websafeConferenceKey)
         # allocate new child (Sesssion) ID with parent_key as parent
         child_id = Session.allocate_ids(size=1, parent=parent_key)[0]
         # make child Key from ID
