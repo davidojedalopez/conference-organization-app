@@ -697,16 +697,14 @@ class ConferenceApi(remote.Service):
 
         Session(**data).put()
 
-        # check if speaker exists in other sections, if so, add to memcache
-        sessions = Session.query(Session.speaker == data['speaker'],
-            ancestor=parent_key)
-        if len(list(sessions)) > 1:
-            taskqueue.add(
-                params={'speaker': data['speaker'],
-                'sessionNames': [session.name for session in sessions]
-                },
-                url='/tasks/add_featured_speaker_to_memcache'
-            )
+        # Add Task queue. Query for Sessions for speaker and ancestory
+        # key will be done on the Task rather than here
+        taskqueue.add(
+            params={'speaker': data['speaker'],
+            'parentKey': parent_key
+            },
+            url='/tasks/add_featured_speaker_to_memcache'
+        )
 
         return request
 

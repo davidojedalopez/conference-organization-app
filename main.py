@@ -16,6 +16,7 @@ import webapp2
 from google.appengine.api import app_identity
 from google.appengine.api import mail
 from google.appengine.api import memcache
+from models import Session
 
 MEMCACHE_FEATURED_SPEAKER_KEY = "featured speaker"
 
@@ -44,11 +45,17 @@ class SendConfirmationEmailHandler(webapp2.RequestHandler):
 
 
 class setFeaturedSpeakerHandler(webapp2.RequestHandler):
-    def get(self):
+    def post(self):
         """Set featured speaker in MemCache"""
         cache_data = {}
         cache_data['speaker'] = self.request.get('speaker')
-        cache_data['sessionNames'] = self.request.get('sessionNames')
+        parentKey = self.request.get('parentKey')
+
+        sessions = Session.query(Session.speaker == data['speaker'],
+            ancestor=parentKey)
+
+        if len(list(sessions)) > 1:     
+            cache_data['sessionNames'] = [session.name for session in sessions]
 
         if cache_data:
             memcache.set(MEMCACHE_FEATURED_SPEAKER_KEY, cache_data)
