@@ -754,7 +754,7 @@ class ConferenceApi(remote.Service):
         return self._copySessionToForm(session)
 
     @endpoints.method(message_types.VoidMessage, SessionForms,
-        http_method='POST',
+        http_method='GET',
         name='getSessionsInWishlist')
     def getSessionsInWishlist(self, request):
         """Returns a user's wishlist of sessions"""
