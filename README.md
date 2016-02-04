@@ -26,7 +26,7 @@ The Session class consists of the following fields:
 
 To allow strong consistent queries, I went for a parent-child implementation for the one `Conference` to many `Sessions` relationship. Sessions are then queried by their conference ancestor, which has a drawback when trying to move sessions between conferences. But, I opted for it because I think the trade-off in consistency is worthwhile. 
 
-For the `Speaker` design, I decided to implement a field on the `Session` class, the `speaker` String property. There is also a class named `SpeakerForm` which is used by the `getFeaturedSpeaker` method to return the speaker name and the sessions he/she has. 
+The `Speaker` design, for simplicity, was implemented as a field on the `Session` class, the `speaker` String property. There is also a class named `SpeakerForm` which is used by the `getFeaturedSpeaker` method to return the speaker name and the sessions he/she has. 
 
 The following endpoints where added: 
 
