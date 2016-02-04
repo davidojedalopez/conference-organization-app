@@ -509,7 +509,8 @@ class ConferenceApi(remote.Service):
                 'No conference found with key: %s' % request.websafeConferenceKey)
 
         # create ancestor query for all key matches for this conference
-        sessions = Session.query(Session.typeOfSession == typeOfSession, ancestor=ndb.Key(Conference, conf.key.id()))
+        sessions = Session.query(Session.typeOfSession == typeOfSession,
+                                        ancestor=ndb.Key(urlsafe=request.websafeConferenceKey))
 
         # return set of SessionForm objects for each Session
         return SessionForms(
