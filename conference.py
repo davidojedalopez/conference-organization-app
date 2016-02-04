@@ -771,7 +771,7 @@ class ConferenceApi(remote.Service):
             items=[self._copySessionToForm(session) for session in sessions])
 
     @endpoints.method(WISHLIST_POST_REQUEST, SessionForm,
-        http_method='POST',
+        http_method='DELETE',
         name='deleteSessionInWishlist')
     def deleteSessionInWishlist(self, request):
         user = endpoints.get_current_user()
