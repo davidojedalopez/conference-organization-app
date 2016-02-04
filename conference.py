@@ -494,10 +494,8 @@ class ConferenceApi(remote.Service):
         http_method='GET', name='getConferenceSessionsByType')
     def getConferenceSessionsByType(self, request):
         """Given a conference, return all sessions of a specified type"""
-
-        # copy ConferenceForm/ProtoRPC Message into dict
-        data = {field.name: getattr(request, field.name) for field in request.all_fields()}
-        typeOfSession = data['typeOfSession']
+        
+        typeOfSession = request.typeOfSession
 
         # get existing conference
         conference = ndb.Key(urlsafe=request.websafeConferenceKey).get()    
