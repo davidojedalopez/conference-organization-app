@@ -701,7 +701,7 @@ class ConferenceApi(remote.Service):
         # key will be done on the Task rather than here
         taskqueue.add(
             params={'speaker': data['speaker'],
-            'parentKey': parent_key
+            'parentKey': str(parent_key.urlsafe())
             },
             url='/tasks/add_featured_speaker_to_memcache'
         )
