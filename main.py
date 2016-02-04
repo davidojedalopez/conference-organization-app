@@ -51,7 +51,7 @@ class setFeaturedSpeakerHandler(webapp2.RequestHandler):
         cache_data['speaker'] = self.request.get('speaker')
         parentKey = self.request.get('parentKey')
 
-        sessions = Session.query(Session.speaker == data['speaker'],
+        sessions = Session.query(Session.speaker == cache_data['speaker'],
             ancestor=parentKey)
 
         if len(list(sessions)) > 1:     
