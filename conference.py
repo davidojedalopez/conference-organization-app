@@ -252,8 +252,8 @@ class ConferenceApi(remote.Service):
 
         # create Conference & return (modified) ConferenceForm
         Conference(**data).put()
-        
-        # send email to organizer confirming     
+
+        # send email to organizer confirming
         taskqueue.add(params={'email': user.email(),
             'conferenceInfo': repr(request)},
             url='/tasks/send_confirmation_email'
@@ -305,7 +305,7 @@ class ConferenceApi(remote.Service):
                     inequality_field = filtr["field"]
 
             formatted_filters.append(filtr)
-        return (inequality_field, formatted_filters)    
+        return (inequality_field, formatted_filters)
 
     @ndb.transactional()
     def _updateConferenceObject(self, request):
@@ -355,7 +355,7 @@ class ConferenceApi(remote.Service):
 
     @endpoints.method(CONF_GET_REQUEST, ConferenceForm,
         path='conference/{websafeConferenceKey}',
-        http_method='GET', 
+        http_method='GET',
         name='getConference')
     def getConference(self, request):
         """Return requested conference (by websafeConferenceKey)."""
@@ -454,13 +454,13 @@ class ConferenceApi(remote.Service):
         value = "London"
         f = ndb.query.FilterNode(field, operator, value)
         q = q.filter(f)
-        
+
         field = "topics"
         operator = "="
         value = "Medical Innovations"
         f2 = ndb.query.FilterNode(field, operator, value)
         q = q.filter(f2)
-        
+
         q = q.order(Conference.name)
 
         q = q.filter(Conference.maxAttendees > 10)
@@ -474,7 +474,7 @@ class ConferenceApi(remote.Service):
         http_method='GET',
         name='getConferenceSessions')
     def getConferenceSessions(self, request):
-        """Given a conference, return all its sessions"""       
+        """Given a conference, return all its sessions"""
 
         # get existing conference
         conference = ndb.Key(urlsafe=request.websafeConferenceKey).get()
@@ -494,16 +494,16 @@ class ConferenceApi(remote.Service):
         http_method='GET', name='getConferenceSessionsByType')
     def getConferenceSessionsByType(self, request):
         """Given a conference, return all sessions of a specified type"""
-        
+
         typeOfSession = request.typeOfSession
 
         # get existing conference
-        conference = ndb.Key(urlsafe=request.websafeConferenceKey).get()    
+        conference = ndb.Key(urlsafe=request.websafeConferenceKey).get()
         if not conference:
             raise endpoints.NotFoundException(
                 'No conference found with key: %s' % request.websafeConferenceKey)
 
-        # create ancestor query for all key matches for this conference
+        # create ancestor query for all key matches for this session
         sessions = Session.query(Session.typeOfSession == typeOfSession,
                                         ancestor=ndb.Key(urlsafe=request.websafeConferenceKey))
 
@@ -582,7 +582,7 @@ class ConferenceApi(remote.Service):
         http_method='GET', name='getConferencesToAttend')
     def getConferencesToAttend(self, request):
         """Get list of conferences that user has registered for."""
-        
+
         prof = self._getProfileFromUser()
 
         # get conferenceKeysToAttend from profile.
@@ -596,7 +596,7 @@ class ConferenceApi(remote.Service):
         # put display names in a dict for easier fetching
         names = {}
         for profile in profiles:
-            names[profile.key.id()] = profile.displayName        
+            names[profile.key.id()] = profile.displayName
 
         # return set of ConferenceForm objects per Conference
         return ConferenceForms(items=[self._copyConferenceToForm(conf, "")\
@@ -644,7 +644,7 @@ class ConferenceApi(remote.Service):
 
 
 # - - - Sessions - - - - - - - - - - - - - - - - - - - -
-    
+
     def _createSessionObject(self, request):
         """Create or update Session object, returning SessionForm/request."""
         # preload necessary data items
@@ -674,10 +674,10 @@ class ConferenceApi(remote.Service):
         # copy SessionForm/ProtoRPC Message into dict
         data = {field.name: getattr(request, field.name) for field in request.all_fields()}
 
-        # convert dates from strings to Date objects; set month based on start_date
+        # convert dates from strings to Date objects
         if data['date']:
-            data['date'] = datetime.strptime(data['date'][:10], "%Y-%m-%d").date()            
-        
+            data['date'] = datetime.strptime(data['date'][:10], "%Y-%m-%d").date()
+
         # convert time from strings to Time object (date-independent)
         if data['startTime']:
             data['startTime'] = datetime.strptime(data['startTime'][:5], "%H:%M").time()
@@ -770,19 +770,19 @@ class ConferenceApi(remote.Service):
         http_method='DELETE',
         name='deleteSessionInWishlist')
     def deleteSessionInWishlist(self, request):
-        """Deletes a previously added Session from the wishlist."""        
+        """Deletes a previously added Session from the wishlist."""
         user = endpoints.get_current_user()
         if not user:
             raise endpoints.UnauthorizedException('Authorization required')
 
         profile = self._getProfileFromUser()
 
-        session = ndb.Key(urlsafe=request.websafeSessionKey).get()       
+        session = ndb.Key(urlsafe=request.websafeSessionKey).get()
         if not session:
             raise endpoints.NotFoundException(
                 'No session found with key %s' % request.websafeSessionKey)
 
-        # check if session is already in wishlist
+        # check if session is not already in wishlist
         if session.key not in profile.sessionsToAttend:
             raise endpoints.BadRequestException(
                 'Session %s is not in the wishlist' % request.websafeSessionKey)
@@ -857,7 +857,7 @@ class ConferenceApi(remote.Service):
         """Returns all non-workshop sessions taking place before 7pm"""
 
         sessions = Session.query(ndb.AND(
-            Session.startTime != None,            
+            Session.startTime != None,
             Session.startTime <= time(hour=19)
             ))
 
@@ -880,4 +880,4 @@ class ConferenceApi(remote.Service):
         )
 
 # registers API
-api = endpoints.api_server([ConferenceApi]) 
+api = endpoints.api_server([ConferenceApi])

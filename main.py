@@ -55,7 +55,7 @@ class setFeaturedSpeakerHandler(webapp2.RequestHandler):
         sessions = Session.query(Session.speaker == cache_data['speaker'],
             ancestor=parentKey)
 
-        if len(list(sessions)) > 1:     
+        if len(list(sessions)) > 1:
             cache_data['sessionNames'] = [session.name for session in sessions]
             memcache.set(MEMCACHE_FEATURED_SPEAKER_KEY, cache_data)
 
